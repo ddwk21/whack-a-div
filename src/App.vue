@@ -1,7 +1,8 @@
 <template>
   <h1>Whack-A-Div</h1>
   <button @click="start" :disabled="isPlaying">Play</button>
-  <Block v-if="isPlaying" :delay="delay"/>
+  <Block v-if="isPlaying" :delay="delay" @score="recordScore"/>
+  <p v-if="showResults">Reaction Time: {{ score }} ms</p>
 </template>
 
 <script>
@@ -17,14 +18,21 @@ export default {
     return {
       isPlaying: false,
       delay: null,
-
+      score: null,
+      showResults: false,
     }
   },
   methods:{
     start(){
-      this.delay = 2000 + Math.random() * 5000
-      this.isPlaying = true
-      console.log(this.delay)
+      this.delay = 2000 + Math.random() * 5000;
+      this.isPlaying = true;
+      console.log(this.delay);
+      this.showResults = false;
+    },
+    recordScore(reactionTime){
+      this.score = reactionTime;
+      this.isPlaying = false;
+      this.showResults = true;
     }
   }
 }
